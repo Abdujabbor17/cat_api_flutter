@@ -17,18 +17,17 @@ class CatService {
   static Future<bool> uploadImage(String path) async {
     Log.wtf(path);
     try {
-      String fileName = path.split('/').last;
-
       FormData formData = FormData.fromMap(
-          {'file': await MultipartFile.fromFile(path,contentType: MediaType("image", "*"))});
+          {'file': await MultipartFile.fromFile(path,
+              contentType: MediaType("image", "jpeg"))}); // or png
 
 
-      Response res = await Dio().post(
-         'https://api.thecatapi.com/v1/images/upload',
+      Response res = await  DioConfig.inheritance.createRequest().post(
+         Urls.uploadImage,
           data: formData,
           options: Options(headers: {
             "Content-Type": "multipart/form-data",
-            "x-api-key": "live_qGrSBuBsNIvrXyHuuGchDXcmYO49yrMR7QUsmX3clAINWkbo7RbRHxwizOJ4jgjg"
+            "x-api-key": Urls.myApiKey
           }));
       Log.i(res.data.toString());
       Log.i(res.statusCode.toString());
@@ -41,7 +40,7 @@ class CatService {
       }
     } on DioError catch (e) {
       if (e.response != null) {
-        Log.i(e.response!.toString());
+        Log.i(e.response!.statusCode.toString()+e.message!..toString());
         return false;
       } else {
         rethrow;

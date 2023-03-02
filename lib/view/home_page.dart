@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Upload image'),),
 
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -53,8 +54,8 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: <Widget>[
                         ListTile(
-                          leading: Icon(Icons.camera_alt),
-                          title: Text("Take a photo"),
+                          leading: const Icon(Icons.camera_alt),
+                          title: const Text("Take a photo"),
                           onTap: () async {
                             await _pickImage(ImageSource.camera);
                             Navigator.pop(context);
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 onPressed: () async {
                   if(_image.path != ''){
-                    var result = await CatService.uploadImage(_image.path);
+                   var result = await CatService.uploadImage(_image.path);
 
                     if (result) {
                       Utils.snackBarSuccess(
